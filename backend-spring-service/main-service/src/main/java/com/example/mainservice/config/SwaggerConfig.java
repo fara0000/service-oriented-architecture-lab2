@@ -1,5 +1,7 @@
 package com.example.mainservice.config;
 
+import com.example.mainservice.model.City;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -12,9 +14,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
-    @Bean
-    public Docket api() {
+    @Bean(name = "swagger")
+    public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
+                .additionalModels(
+                        typeResolver.resolve(City.class))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
