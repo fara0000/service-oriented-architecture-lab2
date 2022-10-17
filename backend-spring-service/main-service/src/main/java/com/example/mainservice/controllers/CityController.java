@@ -1,5 +1,6 @@
 package com.example.mainservice.controllers;
 
+import com.example.mainservice.dto.requests.CityRequestDTO;
 import com.example.mainservice.endpoints.Endpoints;
 import com.example.mainservice.model.City;
 import com.example.mainservice.services.CityService;
@@ -24,8 +25,8 @@ public class CityController {
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
-    @GetMapping(Endpoints.CITY)
-    public ResponseEntity<City> getCityById(@RequestParam Integer cityId) {
+    @GetMapping(Endpoints.CITY_BY_ID)
+    public ResponseEntity<City> getCityById(@PathVariable Integer cityId) {
         return new ResponseEntity<>(cityService.getCityById(cityId), HttpStatus.OK);
     }
 
@@ -33,4 +34,14 @@ public class CityController {
     public ResponseEntity<String> deleteCity(@RequestParam Integer cityId) {
         return new ResponseEntity<>(cityService.deleteCityById(cityId), HttpStatus.OK);
     }
+
+    @PostMapping(Endpoints.CITY)
+    public ResponseEntity<City> addCity(@RequestBody CityRequestDTO cityRequestDTO) {
+        City city = new City(cityRequestDTO);
+
+        return new ResponseEntity<>(cityService.addCity(city), HttpStatus.OK);
+    }
+
+    @PutMapping(Endpoints.CITY)
+    public ResponseEntity<City> updateCity(@RequestBody )
 }

@@ -1,6 +1,6 @@
 package com.example.mainservice.model;
 
-import com.example.mainservice.model.Coordinates;
+import com.example.mainservice.dto.requests.CityRequestDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -60,4 +60,15 @@ public class City {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Human> governor; //Поле может быть null
+
+    public City(CityRequestDTO cityRequestDTO) {
+        this.name = cityRequestDTO.getName();
+        this.coordinates = new Coordinates(cityRequestDTO.getCoordinates());
+        this.creationDate = cityRequestDTO.getCreationDate();
+        this.area = cityRequestDTO.getArea();
+        this.climate = Climate.valueOf(cityRequestDTO.getClimate());
+        this.government = Government.valueOf(cityRequestDTO.getGovernment());
+        this.standardOfLiving = StandardOfLiving.valueOf(cityRequestDTO.getStandardOfLiving()),
+        this.governor = cityRequestDTO.getGovernor();
+    }
 }

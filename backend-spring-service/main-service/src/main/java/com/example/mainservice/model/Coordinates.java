@@ -1,5 +1,6 @@
 package com.example.mainservice.model;
 
+import com.example.mainservice.dto.CoordinatesDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,5 +27,10 @@ public class Coordinates {
 
     @Max(740)
     @Column(name = "y")
-    private int y;
+    private Integer y;
+
+    public Coordinates(CoordinatesDTO coordinatesDTO) {
+        this.x = coordinatesDTO.getX();
+        this.y = coordinatesDTO.getY();
+    }
 }
