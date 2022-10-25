@@ -1,18 +1,18 @@
-package com.example.mainservice.model;
+package com.example.mainservice.entities;
 
-import com.example.mainservice.dto.requests.CityRequestDTO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @Table(name = "city")
 public class City {
@@ -26,7 +26,8 @@ public class City {
     @Column(name = "name")
     private String name; //Поле не может быть null, Строка не может быть пустой
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @NotNull
     @JoinColumn(name = "coordinates_id", referencedColumnName = "id")
     private Coordinates coordinates; //Поле не может быть null
 
@@ -58,17 +59,8 @@ public class City {
     @Column(name = "standardOfLiving")
     private StandardOfLiving standardOfLiving; //Поле не может быть null
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Human> governor; //Поле может быть null
-
-    public City(CityRequestDTO cityRequestDTO) {
-        this.name = cityRequestDTO.getName();
-        this.coordinates = new Coordinates(cityRequestDTO.getCoordinates());
-        this.creationDate = cityRequestDTO.getCreationDate();
-        this.area = cityRequestDTO.getArea();
-        this.climate = Climate.valueOf(cityRequestDTO.getClimate());
-        this.government = Government.valueOf(cityRequestDTO.getGovernment());
-        this.standardOfLiving = StandardOfLiving.valueOf(cityRequestDTO.getStandardOfLiving()),
-        this.governor = cityRequestDTO.getGovernor();
-    }
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Nullable
+    @JoinColumn(name = "human_id", referencedColumnName = "id")
+    private Human governor; //Поле может быть null
 }

@@ -1,12 +1,12 @@
 package com.example.mainservice.dto.requests;
 
 import com.example.mainservice.dto.CoordinatesDTO;
+import com.example.mainservice.dto.HumanDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,5 +21,5 @@ public class CityRequestDTO {
     private String climate;
     private String government;
     private String standardOfLiving;
-    private List<Integer> governor;
+    private HumanDTO governor;
 }

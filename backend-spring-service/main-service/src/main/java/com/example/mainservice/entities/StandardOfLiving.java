@@ -1,4 +1,4 @@
-package com.example.mainservice.model;
+package com.example.mainservice.entities;
 
 public enum StandardOfLiving {
     ULTRA_HIGH,

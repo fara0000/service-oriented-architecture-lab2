@@ -1,6 +1,6 @@
 package com.example.mainservice.config;
 
-import com.example.mainservice.model.City;
+import com.example.mainservice.entities.City;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

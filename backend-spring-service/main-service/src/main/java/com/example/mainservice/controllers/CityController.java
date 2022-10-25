@@ -1,8 +1,9 @@
 package com.example.mainservice.controllers;
 
+import com.example.mainservice.dto.mappers.CityMapper;
 import com.example.mainservice.dto.requests.CityRequestDTO;
 import com.example.mainservice.endpoints.Endpoints;
-import com.example.mainservice.model.City;
+import com.example.mainservice.entities.City;
 import com.example.mainservice.services.CityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 public class CityController {
     private final CityService cityService;
+    private final CityMapper cityMapper;
 
     @GetMapping(Endpoints.CITY)
     public ResponseEntity<List<City>> getCities() {
@@ -37,11 +39,13 @@ public class CityController {
 
     @PostMapping(Endpoints.CITY)
     public ResponseEntity<City> addCity(@RequestBody CityRequestDTO cityRequestDTO) {
-        City city = new City(cityRequestDTO);
+        City city = cityMapper.convertToEntity(cityRequestDTO);
+
+        log.info("City mapped: ", city);
 
         return new ResponseEntity<>(cityService.addCity(city), HttpStatus.OK);
     }
 
-    @PutMapping(Endpoints.CITY)
-    public ResponseEntity<City> updateCity(@RequestBody )
+//    @PutMapping(Endpoints.CITY)
+//    public ResponseEntity<City> updateCity(@RequestBody )
 }

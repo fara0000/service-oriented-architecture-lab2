@@ -1,7 +1,7 @@
 package com.example.mainservice.services;
 
 import com.example.mainservice.exceptions.NotFoundException;
-import com.example.mainservice.model.City;
+import com.example.mainservice.entities.City;
 import com.example.mainservice.repositories.CityRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

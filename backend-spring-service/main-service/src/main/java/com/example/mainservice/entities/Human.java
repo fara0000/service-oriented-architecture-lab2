@@ -1,4 +1,4 @@
-package com.example.mainservice.model;
+package com.example.mainservice.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

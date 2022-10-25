@@ -1,4 +1,4 @@
-package com.example.mainservice.model;
+package com.example.mainservice.entities;
 
 import com.example.mainservice.dto.CoordinatesDTO;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
