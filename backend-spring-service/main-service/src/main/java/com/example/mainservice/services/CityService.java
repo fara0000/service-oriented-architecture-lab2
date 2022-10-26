@@ -33,4 +33,12 @@ public class CityService {
     public City addCity(City city) {
         return cityRepository.save(city);
     }
+
+    public City updateCity(Integer id, City cityUpdateData) {
+        return cityRepository.findById(id).map(org -> {
+            org.setName(cityUpdateData.getName());
+            // ... остальные параметры
+            return cityRepository.save(org);
+        }).orElseThrow(() -> new NotFoundException(String.format("City with id %d not found", id)));
+    }
 }

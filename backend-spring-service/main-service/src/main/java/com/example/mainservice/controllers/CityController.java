@@ -2,6 +2,7 @@ package com.example.mainservice.controllers;
 
 import com.example.mainservice.dto.mappers.CityMapper;
 import com.example.mainservice.dto.requests.CityRequestDTO;
+import com.example.mainservice.dto.requests.CityUpdateRequestDTO;
 import com.example.mainservice.endpoints.Endpoints;
 import com.example.mainservice.entities.City;
 import com.example.mainservice.services.CityService;
@@ -46,6 +47,14 @@ public class CityController {
         return new ResponseEntity<>(cityService.addCity(city), HttpStatus.OK);
     }
 
-//    @PutMapping(Endpoints.CITY)
-//    public ResponseEntity<City> updateCity(@RequestBody )
+    /*
+         TODO: хреново сделано не хочется каждый раз при обновлении сущности все его параметры с клиента
+                посылать хочется сделать так чтобы посылать только тот аттрибут который хотим изменить
+    */
+    @PutMapping(Endpoints.CITY)
+    public ResponseEntity<City> updateCity(@RequestBody CityUpdateRequestDTO cityUpdateRequestDTO) {
+        City city = cityMapper.convertToEntity(cityUpdateRequestDTO.getBody());
+
+        return new ResponseEntity<>(cityService.updateCity(cityUpdateRequestDTO.getId(), city), HttpStatus.OK);
+    }
 }
