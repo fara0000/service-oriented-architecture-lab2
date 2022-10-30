@@ -1,8 +1,21 @@
 package com.example.mainservice.repositories;
 
 import com.example.mainservice.entities.City;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface CityRepository extends JpaRepository<City, Integer> {
+import java.util.List;
+import java.util.Optional;
+
+public interface CityRepository extends JpaRepository<City, Integer>, PagingAndSortingRepository<City, Integer> {
     City findCityById(Integer id);
+
+    @Query(value="select avg(City.meters_above_sea_level) from City", nativeQuery = true)
+    Long findAverageOfSeaLevels();
+
+    Optional<List<City>> findCitiesByName(String name);
 }

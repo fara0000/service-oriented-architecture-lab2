@@ -7,10 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="jaxrs-service" />
         <module name="main-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="calculate-service" target="1.8" />
+      <module name="jaxrs-service" target="1.8" />
       <module name="main-service" target="11" />
     </bytecodeTargetLevel>
   </component>

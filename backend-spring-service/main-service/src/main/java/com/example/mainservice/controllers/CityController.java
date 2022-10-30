@@ -6,6 +6,10 @@ import com.example.mainservice.dto.requests.CityUpdateRequestDTO;
 import com.example.mainservice.endpoints.Endpoints;
 import com.example.mainservice.entities.City;
 import com.example.mainservice.services.CityService;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,8 +26,8 @@ public class CityController {
     private final CityMapper cityMapper;
 
     @GetMapping(Endpoints.CITY)
-    public ResponseEntity<List<City>> getCities() {
-        List<City> cities = cityService.getAllCities();
+    public ResponseEntity<List<City>> getCities(@RequestParam int size, @RequestParam int page) {
+        List<City> cities = cityService.getAllCities(size, page);
 
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
@@ -39,6 +43,15 @@ public class CityController {
     }
 
     @PostMapping(Endpoints.CITY)
+    @Operation(summary = "Create City",
+            responses = {
+                    @ApiResponse(description = "City",
+                            responseCode = "200",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = City.class))),
+                    @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json"), description = "City is invalid")
+            }
+    )
     public ResponseEntity<City> addCity(@RequestBody CityRequestDTO cityRequestDTO) {
         City city = cityMapper.convertToEntity(cityRequestDTO);
 
@@ -56,5 +69,15 @@ public class CityController {
         City city = cityMapper.convertToEntity(cityUpdateRequestDTO.getBody());
 
         return new ResponseEntity<>(cityService.updateCity(cityUpdateRequestDTO.getId(), city), HttpStatus.OK);
+    }
+
+    @GetMapping(Endpoints.GET_CITY_AVERAGE)
+    public ResponseEntity<Long> averageCitiesBySeaLevel() {
+        return new ResponseEntity<>(cityService.averageBySeaLevel(), HttpStatus.OK);
+    }
+
+    @GetMapping(Endpoints.GET_CITIES_BY_NAME)
+    public ResponseEntity<List<City>> getCitiesByName(@RequestParam String cityName) {
+        return new ResponseEntity<>(cityService.getCitiesByName(cityName), HttpStatus.OK);
     }
 }

@@ -20,7 +20,7 @@ public class SwaggerConfig {
                 .additionalModels(
                         typeResolver.resolve(City.class))
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.example.mainservice.controllers"))
                 .paths(PathSelectors.any())
                 .build();
     }

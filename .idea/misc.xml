@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/backend-jaxrs-service/calculate-service" />
+    <file type="web" url="file://$PROJECT_DIR$/jaxrs-service" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/backend-spring-service/main-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend-jaxrs-service/calculate-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../../ТПО/testing-software/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/jaxrs-service/pom.xml" />
       </list>
     </option>
   </component>
