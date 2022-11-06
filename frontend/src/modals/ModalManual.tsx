@@ -13,7 +13,6 @@ import {
 import React, {FC, useState} from 'react';
 import { IconType } from 'react-icons/lib';
 import { getChakraPortalProps } from '../core/chakra/chakraProvider';
-import CurrencyRubleIcon from "@mui/icons-material/CurrencyRuble";
 
 interface ModalManualProps {
     value: any;
@@ -94,7 +93,6 @@ export const ModalManual: FC<ModalManualProps> = ({value}) => {
                                     >
                                     </Input>
                                     <Box mt='5px' color='#3047FE' h='24px'>
-                                        <CurrencyRubleIcon/>
                                     </Box>
                                 </Flex>
                             </Box>

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class CityService {
     private final CityRepository cityRepository;
 
-    public List<City> getAllCities(int size, int page) {
+    public List<City> getAllCities(Integer size, Integer page, String sortable) {
         Pageable pagination = PageRequest.of(page - 1, size);
         return cityRepository.findAll(pagination).stream().collect(Collectors.toList());
     }

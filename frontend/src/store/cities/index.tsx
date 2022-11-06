@@ -1,0 +1,1 @@
+import {MobXGlobals} from "mobx/dist/core/globalstate";

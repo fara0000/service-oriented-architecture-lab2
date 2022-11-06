@@ -1,12 +1,25 @@
-export interface sessionsType {
+export type CoordinatesType = {
     id: number;
-    sessionName: string;
-    customerName: string;
-    currentPrice: number;
-    start: string;
-    end: string;
-    bet: number;
-    location: string;
-    lastCustomerBet: string;
-    status: string
+    x: number;
+    y: number;
+}
+
+export type HumanType = {
+    age: number;
+    height: number;
+    birthday: Date;
+}
+
+export type CityType = {
+    id: number;
+    name: string;
+    coordinates: CoordinatesType;
+    creationDate: Date;
+    area: number;
+    population: number;
+    metersAboveSeaLevel: number;
+    climate: string;
+    government: string;
+    standardOfLiving: string;
+    governor: HumanType;
 }

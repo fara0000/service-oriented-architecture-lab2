@@ -21,13 +21,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RestController
+@RequestMapping("/")
 public class CityController {
     private final CityService cityService;
     private final CityMapper cityMapper;
 
     @GetMapping(Endpoints.CITY)
-    public ResponseEntity<List<City>> getCities(@RequestParam int size, @RequestParam int page) {
-        List<City> cities = cityService.getAllCities(size, page);
+    public ResponseEntity<List<City>> getCities(@RequestParam Integer size, @RequestParam Integer page, @RequestParam String sortable) {
+        List<City> cities = cityService.getAllCities(size, page, sortable);
 
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
