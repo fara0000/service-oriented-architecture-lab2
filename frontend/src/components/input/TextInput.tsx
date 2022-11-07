@@ -1,4 +1,5 @@
 import {
+    Flex,
   Button,
   FormControl,
   FormControlProps,
@@ -18,6 +19,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 type TextInputProps = {
   label?: string | JSX.Element;
+  labelStyles?: object;
   helperText?: string | JSX.Element;
   isClearable?: boolean;
   addCheckIfNotEmpty?: boolean;
@@ -48,6 +50,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       size,
       type,
       addCheckIfNotEmpty,
+        labelStyles,
       ...props
     },
     ref
@@ -63,7 +66,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           {...{ isRequired, isDisabled, isReadOnly, fontSize }}
           zIndex={1}
         >
-          <FormLabel htmlFor={props.name}>{label}</FormLabel>
+          <Flex flexDir="row">
+              <FormLabel htmlFor={props.name} style={labelStyles} mr="5px">{label}</FormLabel>
+              {props.required &&
+                  <span style={{color: "red"}}>*</span>
+              }
+          </Flex>
           <InputGroup size={size}>
             <Input
               ref={ref}

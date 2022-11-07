@@ -26,6 +26,7 @@ public class CityController {
     private final CityService cityService;
     private final CityMapper cityMapper;
 
+    @CrossOrigin
     @GetMapping(Endpoints.CITY)
     public ResponseEntity<List<City>> getCities(@RequestParam Integer size, @RequestParam Integer page, @RequestParam String sortable) {
         List<City> cities = cityService.getAllCities(size, page, sortable);

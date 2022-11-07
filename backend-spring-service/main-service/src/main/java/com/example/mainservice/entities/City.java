@@ -47,7 +47,6 @@ public class City {
     @Column(name = "metersAboveSeaLevel")
     private Long metersAboveSeaLevel;
 
-    @NotNull
     @Column(name = "climate")
     private Climate climate; //Поле может быть null
 

@@ -14,7 +14,7 @@ import {
 import {MdPeople, MdTimer, MdVideoLibrary} from "react-icons/md";
 import { IoEllipsisHorizontalSharp } from "react-icons/io5";
 import { BsArrowRight } from "react-icons/bs";
-import {CityType} from "../../types";
+import {CityType} from "../../types/types";
 
 export type Props = {
     name: string;
