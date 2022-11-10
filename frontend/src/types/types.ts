@@ -13,13 +13,13 @@ export type HumanType = {
 export type CityType = {
     id: number;
     name: string;
-    coordinates: CoordinatesType;
-    creationDate: Date;
-    area: number;
+    coordinates: CoordinatesType | Omit<CoordinatesType, 'id'>;
+    creationDate: Date | null | string;
+    area: number | null;
     population: number;
-    metersAboveSeaLevel: number;
-    climate: string;
+    metersAboveSeaLevel: number | null;
+    climate: string | null;
     government: string;
     standardOfLiving: string;
-    governor: HumanType;
+    governor: HumanType | null;
 }

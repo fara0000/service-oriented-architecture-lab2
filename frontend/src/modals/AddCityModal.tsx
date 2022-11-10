@@ -16,32 +16,72 @@ import {
 import React, {FC, useState} from 'react';
 import {AiOutlinePlus} from "react-icons/ai";
 import {CloseIcon} from "../assets/svg/CloseIcon";
-import {Form, Formik} from "formik";
+import {Form, Formik, FormikHelpers} from "formik";
 import {TextInput} from "../components/input/TextInput";
 import {SelectField} from "../components/select";
 import {ClimateTypes, GovernmentTypes, LivingStandardTypes} from "../types/enums";
 import { useFetch } from "../hooks/useFetch";
 import * as urls from "../api/urls";
+import {CityType, CoordinatesType, HumanType} from "../types/types";
+import * as Yup from 'yup';
 
-interface ModalManualProps {
 
+interface FormValuesType {
+    name: string;
+    coordinates: string;
+    area: number | null;
+    population: number;
+    metersAboveSeaLevel: number | null;
+    climate: string | null;
+    government: string;
+    standardOfLiving: string;
+    governor: HumanType | null;
 }
 
-export const AddCityModal: FC<ModalManualProps> = () => {
+const validateSchema = Yup.object().shape({
+    name: Yup.string().min(3, 'Too short').max(30, 'Too long').required('required'),
+    // coordinates should fix, now it gets all number | , | .
+    coordinates: Yup.string().trim().matches(/^[0-9,.]/).required('required'),
+    // population: Yup.number().min(1).required(),
+    area: Yup.number().min(-11).nullable(true),
+    metersAboveSeaLevel: Yup.number().min(1).nullable(true),
+    climate: Yup.string().nullable(true),
+    // исправить enum, работает не дает отправить но не показывает для пользователя что не ок
+    standardOfLiving: Yup.string().required('required'),
+    government: Yup.mixed<GovernmentTypes>().oneOf(Object.values(GovernmentTypes)).required('required'),
+    governor: Yup.object().shape({
+        age: Yup.number().min(1),
+        height: Yup.number().min(60.0),
+        birthday: Yup.string(),
+    }).nullable(true),
+})
+
+export const AddCityModal: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isGovernor, setIsGovernor] = useState(false);
     const token = localStorage.getItem('authToken')
     const [ inputValue, setInputValue ] = useState('');
-
-    const addNewCity = async () => {
-        const addCityFetch = useFetch("POST", urls.addCities, '', )
-    }
 
     const closeModal = () => {
         setIsGovernor(false);
         setInputValue('');
         onClose();
         setInputValue('');
+    }
+
+    const addNewCity = async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+        const newData: Omit<CityType, 'id'> = {
+            ...values,
+            creationDate: new Date(),
+            coordinates: {
+                x: Number(values.coordinates.split(",")[0]),
+                y: Number(values.coordinates.split(",")[1]),
+            }
+        }
+        console.log(newData, 'post data');
+        await useFetch("POST", urls.addCities, '', newData)
+        closeModal();
+        formikHelpers.resetForm();
     }
 
     return (
@@ -73,15 +113,27 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                         </Flex>
                     </ModalHeader>
                     <ModalBody p="0">
-                        <Formik<any>
+                        <Formik<FormValuesType>
                             enableReinitialize
-                            initialValues={{}}
-                            onSubmit={
-                                () => console.log('1')
-                            }
+                            initialValues={{
+                                name: '',
+                                coordinates: '',
+                                population: 0,
+                                area: null,
+                                metersAboveSeaLevel: null,
+                                climate: null,
+                                standardOfLiving: '',
+                                government: '',
+                                governor: null,
+                            }}
+                            validationSchema={validateSchema}
+                            onSubmit={ async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+                                // console.log(values, 'value');
+                                await addNewCity(values, formikHelpers);
+                            }}
                         >
                             {({ isSubmitting, dirty, isValid, values }) => (
-                                <Form id="filter-form" style={{display: "flex", justifyContent: "space-between", marginTop: '15px'}}>
+                                <Form id="adding-city-form" style={{display: "flex", justifyContent: "space-between", marginTop: '15px'}}>
                                     <Box d={"flex"}  flexDir="column" gridGap="20px" w="90%" paddingRight="5%">
                                         <Box flexDir="column">
                                             <TextInput
@@ -126,7 +178,7 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                                                 borderRadius="6px"
                                                 style={{ border: "1px solid #C4C4C4"}}
                                                 _placeholder={{ color: "#C4C4C4" }}
-                                                required
+                                                // required
                                             />
                                         </Box>
                                         <Flex gridGap="20px">
@@ -238,7 +290,10 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                                             placeholder="Add City's Climate"
                                             required
                                         />
-                                        <Text color="blue.500" cursor="pointer" onClick={() => setIsGovernor(!isGovernor)}>
+                                        <Text color="blue.500" cursor="pointer" onClick={() => {
+                                            values.governor = null;
+                                            setIsGovernor(!isGovernor);
+                                        }}>
                                             {isGovernor ? 'Remove Governor fields...' : 'Add Governor fields...'}
                                         </Text>
                                         {isGovernor ?
@@ -248,7 +303,7 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                                                         <TextInput
                                                             labelStyles={{ color: "#5D5D5D", fontSize: "16px" }}
                                                             autoComplete="on"
-                                                            name='age'
+                                                            name='governor.age'
                                                             label='Age'
                                                             placeholder='Governor age'
                                                             w="100%"
@@ -263,7 +318,7 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                                                         <TextInput
                                                             labelStyles={{ color: "#5D5D5D", fontSize: "16px" }}
                                                             autoComplete="on"
-                                                            name='height'
+                                                            name='governor.height'
                                                             label='Height'
                                                             placeholder='Governor height'
                                                             w="100%"
@@ -279,9 +334,9 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                                                     <TextInput
                                                         labelStyles={{ color: "#5D5D5D", fontSize: "16px" }}
                                                         autoComplete="on"
-                                                        name='birthday'
+                                                        name='governor.birthday'
                                                         label='Birthday'
-                                                        placeholder='Enter Governor birthday'
+                                                        placeholder='dd/mm/yyyy'
                                                         w="100%"
                                                         h="43px"
                                                         borderRadius="6px"
@@ -316,7 +371,8 @@ export const AddCityModal: FC<ModalManualProps> = () => {
                         </Button>
 
                         <Button
-                            onClick={() => console.log('1')}
+                            type="submit"
+                            form="adding-city-form"
                             h="38px"
                             w='140px'
                             borderRadius="4px"

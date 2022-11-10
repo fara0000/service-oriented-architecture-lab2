@@ -3,7 +3,6 @@ import {Box, Flex, Icon, useColorMode} from "@chakra-ui/react";
 import {AiOutlinePlus} from "react-icons/ai";
 import {CityCard} from "../../components/card";
 import {convertTimestamp} from "../../utils/convertDate";
-import {useHistory} from "react-router-dom";
 import {useFetch} from "../../hooks/useFetch";
 import * as urls from "../../api/urls";
 import {AddCityModal} from "../../modals/AddCityModal";
@@ -14,7 +13,7 @@ export type Props = {
 
 export const CitiesContainer: FC<Props> = () => {
     let sortable = 1;
-    let limit = 8;
+    let limit = 25;
     let offset = 1;
     const [cities, setCities] = useState<Array<any>>([]);
 

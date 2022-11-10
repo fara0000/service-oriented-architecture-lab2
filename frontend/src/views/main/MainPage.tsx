@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Box, Text, Button, useColorMode, Flex, Image, Icon, ButtonProps} from "@chakra-ui/react";
-import {useHistory} from "react-router-dom";
 import {useFetch} from "../../hooks/useFetch";
 import {getCitiesFetch, getCity} from "../../api";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
