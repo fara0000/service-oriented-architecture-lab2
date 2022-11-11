@@ -27,9 +27,4 @@ public class Coordinates {
     @Max(740)
     @Column(name = "y")
     private Integer y;
-
-    public Coordinates(CoordinatesDTO coordinatesDTO) {
-        this.x = coordinatesDTO.getX();
-        this.y = coordinatesDTO.getY();
-    }
 }

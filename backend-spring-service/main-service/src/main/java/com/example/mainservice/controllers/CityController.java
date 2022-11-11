@@ -22,11 +22,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/")
+@CrossOrigin
 public class CityController {
     private final CityService cityService;
     private final CityMapper cityMapper;
 
-    @CrossOrigin
     @GetMapping(Endpoints.CITY)
     public ResponseEntity<List<City>> getCities(@RequestParam Integer size, @RequestParam Integer page, @RequestParam String sortable) {
         List<City> cities = cityService.getAllCities(size, page, sortable);
@@ -44,6 +44,7 @@ public class CityController {
         return new ResponseEntity<>(cityService.deleteCityById(cityId), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping(Endpoints.CITY)
     @Operation(summary = "Create City",
             responses = {
@@ -55,9 +56,9 @@ public class CityController {
             }
     )
     public ResponseEntity<City> addCity(@RequestBody CityRequestDTO cityRequestDTO) {
+        System.out.print(cityRequestDTO);
         City city = cityMapper.convertToEntity(cityRequestDTO);
-
-        log.info("City mapped: ", city);
+        System.out.print(city);
 
         return new ResponseEntity<>(cityService.addCity(city), HttpStatus.OK);
     }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -39,7 +40,7 @@ public class City {
     @Column(name = "area")
     private long area; //Значение поля должно быть больше 0
 
-    @NotNull
+    @NotNull(message = "population can't be empty")
     @Min(1)
     @Column(name = "population")
     private Integer population; //Значение поля должно быть больше 0, Поле не может быть null

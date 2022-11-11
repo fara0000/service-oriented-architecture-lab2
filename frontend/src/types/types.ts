@@ -14,7 +14,7 @@ export type CityType = {
     id: number;
     name: string;
     coordinates: CoordinatesType | Omit<CoordinatesType, 'id'>;
-    creationDate: Date | null | string;
+    creationDate: Date | null | number | string;
     area: number | null;
     population: number;
     metersAboveSeaLevel: number | null;

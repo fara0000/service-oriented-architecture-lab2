@@ -27,7 +27,7 @@ export const useFetch = <T>(method: string, url: string, urlParams?: string, dat
             .catch((err) => console.log('Put method error:', err))
 
         case 'DELETE':
-            return axios.delete(url,{
+            return axios.delete(url + (urlParams ? urlParams : ''),{
                 headers: {
                     'content-type': 'application/json'
                 },

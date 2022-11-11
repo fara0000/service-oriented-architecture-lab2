@@ -42,8 +42,8 @@ const validateSchema = Yup.object().shape({
     name: Yup.string().min(3, 'Too short').max(30, 'Too long').required('required'),
     // coordinates should fix, now it gets all number | , | .
     coordinates: Yup.string().trim().matches(/^[0-9,.]/).required('required'),
-    // population: Yup.number().min(1).required(),
-    area: Yup.number().min(-11).nullable(true),
+    population: Yup.number().min(1).required(),
+    area: Yup.number().min(1).nullable(true),
     metersAboveSeaLevel: Yup.number().min(1).nullable(true),
     climate: Yup.string().nullable(true),
     // исправить enum, работает не дает отправить но не показывает для пользователя что не ок
@@ -178,7 +178,7 @@ export const AddCityModal: FC = () => {
                                                 borderRadius="6px"
                                                 style={{ border: "1px solid #C4C4C4"}}
                                                 _placeholder={{ color: "#C4C4C4" }}
-                                                // required
+                                                required
                                             />
                                         </Box>
                                         <Flex gridGap="20px">

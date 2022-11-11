@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {
     Avatar,
     AvatarGroup,
@@ -11,18 +11,33 @@ import {
     useColorModeValue, DarkMode, Badge, Divider,
 } from "@chakra-ui/react";
 // Assets
-import {MdPeople, MdTimer, MdVideoLibrary} from "react-icons/md";
+import {MdDeleteOutline, MdPeople, MdTimer, MdVideoLibrary} from "react-icons/md";
 import { IoEllipsisHorizontalSharp } from "react-icons/io5";
 import { BsArrowRight } from "react-icons/bs";
+import { CiEdit } from "react-icons/ci";
+import { BiEditAlt } from "react-icons/bi";
+import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import {CityType} from "../../types/types";
+import {getCityFetch} from "../../api";
 
 export type Props = {
     name: string;
     item: CityType;
     creationDate: string;
+    onOpen: () => void;
+    setSelectedCity: (item: CityType) => void;
+    getParams: any;
 }
 
-export const CityCard: FC<Props> = ({ name, creationDate}) => {
+export const CityCard: FC<Props> = ({
+    name,
+    item,
+    creationDate,
+    onOpen,
+    setSelectedCity,
+    getParams,
+}) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     let boxBg = useColorModeValue("white !important", "#2f9e85 !important");
     let secondaryBg = useColorModeValue("gray.50", "whiteAlpha.100");
     let mainText = useColorModeValue("gray.800", "white");
@@ -49,20 +64,41 @@ export const CityCard: FC<Props> = ({ name, creationDate}) => {
                 >
                     {name}
                 </Text>
-                <Button
-                    w='24px'
-                    h='24px'
-                    align='center'
-                    justify='center'
-                    borderRadius='12px'
-                    bg={iconBox}>
-                    <Icon
-                        w='24px'
-                        h='24px'
-                        as={IoEllipsisHorizontalSharp}
-                        color={iconColor}
-                    />
-                </Button>
+                <Icon
+                    mt='1px'
+                    w='22px'
+                    h='22px'
+                    as={CiEdit}
+                    cursor="pointer"
+                    color={iconColor}
+                />
+                <Icon
+                    ml='5px'
+                    w='22px'
+                    h='22px'
+                    as={MdDeleteOutline}
+                    onClick={async () => {
+                        setSelectedCity(item);
+                        onOpen();
+                    }}
+                    cursor="pointer"
+                    color={iconColor}
+                />
+                {/*<Button*/}
+                {/*    w='24px'*/}
+                {/*    h='24px'*/}
+                {/*    align='center'*/}
+                {/*    justify='center'*/}
+                {/*    borderRadius='12px'*/}
+                {/*    bg={iconBox}*/}
+                {/*>*/}
+                {/*    <Icon*/}
+                {/*        w='24px'*/}
+                {/*        h='24px'*/}
+                {/*        as={IoEllipsisHorizontalSharp}*/}
+                {/*        color={iconColor}*/}
+                {/*    />*/}
+                {/*</Button>*/}
             </Flex>
             {/*<Text*/}
             {/*    fontWeight='600'*/}
@@ -114,6 +150,9 @@ export const CityCard: FC<Props> = ({ name, creationDate}) => {
                     </DarkMode>
                 </Flex>
             </Flex>
+            {/*<Flex position="absolute" width: >*/}
+
+            {/*</Flex>*/}
         </Flex>
     )
 }

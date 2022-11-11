@@ -29,8 +29,9 @@ public class CityService {
     }
 
     public String deleteCityById(Integer id) {
-        String successMsg =  "City_id " + id + "deleted successfully";
+        String successMsg =  "City_id " + id + " deleted successfully";
         getCityById(id);
+        cityRepository.deleteById(id);
 
         return successMsg;
     }

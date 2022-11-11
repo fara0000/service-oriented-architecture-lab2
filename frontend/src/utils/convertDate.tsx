@@ -9,7 +9,8 @@ export const convertMinutesToData = (totalMinutes: any) => {
     return '0' + hours + ':' + minutes + ':' + '00';
 }
 
-export const convertTimestamp = (timestamp: number) => {
+export const convertTimestamp = (timestamp: Date | number | string | null) => {
+    // @ts-ignore
     let d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
         yyyy = d.getFullYear(),
         mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
