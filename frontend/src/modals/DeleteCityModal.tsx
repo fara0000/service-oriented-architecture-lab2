@@ -19,7 +19,7 @@ import {CloseIcon} from "../assets/svg/CloseIcon";
 import {Form, Formik, FormikHelpers} from "formik";
 import { useFetch } from "../hooks/useFetch";
 import * as urls from "../api/urls";
-import { CityType } from "../types/types";
+import {CityType, GetParamsType} from "../types/types";
 import {errorToast} from "../components/alerts/fail";
 import {successToast} from "../components/alerts/success";
 import {getCityFetch} from "../api";
@@ -29,19 +29,29 @@ type Props = {
     item: CityType;
     isOpen: boolean;
     onClose: () => void;
-    getCity:  Promise<void | AxiosResponse<any, any>>;
+    params: GetParamsType;
+    setCities: any;
+    setCitiesCount: any;
 }
 
-export const DeleteCityModal: FC<Props> = ({ item, isOpen, onClose, getCity}) => {
+export const DeleteCityModal: FC<Props> = ({ item, isOpen, onClose, setCities, setCitiesCount, params}) => {
     const closeModal = () => {
         onClose();
+    }
+
+    const getCities = async () => {
+        const cities = await getCityFetch(params);
+
+        setCities(cities?.data.cities);
+        setCitiesCount(cities?.data.count);
     }
 
     const deleteCity = async (id: number) => {
         const res = await useFetch("DELETE", urls.deleteCity, `?cityId=${id}`)
         closeModal();
         // @ts-ignore
-        await getCity();
+        await getCities();
+
         res?.status === 200 ? successToast(res?.data) : errorToast("can't delete city, try again please...");
     }
 
@@ -75,7 +85,7 @@ export const DeleteCityModal: FC<Props> = ({ item, isOpen, onClose, getCity}) =>
                             </Box>
                         </Flex>
                     </ModalHeader>
-                    <ModalBody p="0" d="flex" justifyContent="center">
+                    <ModalBody p="0" d="flex" justifyContent="center" m="20px">
                         <Text align='center' fontSize='18px' fontWeight="700">
                             Are you sure want to delete <span style={{ color: '#bd2121' }}>{item.name} city</span> with <span style={{ color: '#bd2121' }}>id={item.id}</span>?
                         </Text>

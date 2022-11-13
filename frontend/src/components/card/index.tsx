@@ -26,7 +26,8 @@ export type Props = {
     creationDate: string;
     onOpen: () => void;
     setSelectedCity: (item: CityType) => void;
-    getParams: any;
+    setIsEditModalOpen: (isOpen: boolean) => void;
+    setIsCityInfoModalOpen: (isOpen: boolean) => void;
 }
 
 export const CityCard: FC<Props> = ({
@@ -35,7 +36,8 @@ export const CityCard: FC<Props> = ({
     creationDate,
     onOpen,
     setSelectedCity,
-    getParams,
+    setIsEditModalOpen,
+    setIsCityInfoModalOpen,
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let boxBg = useColorModeValue("white !important", "#2f9e85 !important");
@@ -71,13 +73,17 @@ export const CityCard: FC<Props> = ({
                     as={CiEdit}
                     cursor="pointer"
                     color={iconColor}
+                    onClick={() => {
+                        setSelectedCity(item);
+                        setIsEditModalOpen(true);
+                    }}
                 />
                 <Icon
                     ml='5px'
                     w='22px'
                     h='22px'
                     as={MdDeleteOutline}
-                    onClick={async () => {
+                    onClick={() => {
                         setSelectedCity(item);
                         onOpen();
                     }}
@@ -143,6 +149,10 @@ export const CityCard: FC<Props> = ({
                             justifyContent='center'
                             alignItems='center'
                             cursor='pointer'
+                            onClick={() => {
+                                setSelectedCity(item);
+                                setIsCityInfoModalOpen(true)
+                            }}
                         >
                             Learn More
                             <Icon as={BsArrowRight} ml="5px"/>

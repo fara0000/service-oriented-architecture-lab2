@@ -3,9 +3,9 @@ package com.example.mainservice.enums;
 public enum SortFields {
     ID("id"),
     NAME("name"),
-    COORDINATEID("Coordinate.id"),
-    COORDINATEX("Coordinate.x"),
-    COORDINATEY("Coordinate.y"),
+    COORDINATEID("coordinates.id"),
+    COORDINATEX("coordinates.x"),
+    COORDINATEY("coordinates.y"),
     CREATIONDATE("creationDate"),
     AREA("area"),
     POPULATION("population"),

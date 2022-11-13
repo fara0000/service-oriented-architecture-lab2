@@ -13,7 +13,7 @@ export type HumanType = {
 export type CityType = {
     id: number;
     name: string;
-    coordinates: CoordinatesType | Omit<CoordinatesType, 'id'>;
+    coordinates: CoordinatesType | any;
     creationDate: Date | null | number | string;
     area: number | null;
     population: number;
@@ -22,4 +22,11 @@ export type CityType = {
     government: string;
     standardOfLiving: string;
     governor: HumanType | null;
+}
+
+export type GetParamsType = {
+    sortable: string;
+    limit: number;
+    offset: number;
+    filter: string;
 }

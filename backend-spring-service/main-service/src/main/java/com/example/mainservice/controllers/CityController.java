@@ -3,6 +3,7 @@ package com.example.mainservice.controllers;
 import com.example.mainservice.dto.mappers.CityMapper;
 import com.example.mainservice.dto.requests.CityRequestDTO;
 import com.example.mainservice.dto.requests.CityUpdateRequestDTO;
+import com.example.mainservice.dto.responses.CityResponseDTO;
 import com.example.mainservice.endpoints.Endpoints;
 import com.example.mainservice.entities.City;
 import com.example.mainservice.services.CityService;
@@ -16,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.logging.Filter;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,10 +31,10 @@ public class CityController {
     private final CityMapper cityMapper;
 
     @GetMapping(Endpoints.CITY)
-    public ResponseEntity<List<City>> getCities(@RequestParam Integer size, @RequestParam Integer page, @RequestParam String sortable) {
-        List<City> cities = cityService.getAllCities(size, page, sortable);
+    public ResponseEntity<CityResponseDTO> getCities(@RequestParam Integer size, @RequestParam Integer page, @RequestParam String sortable, @RequestParam String filter) {
+        CityResponseDTO cityResponseDTO = cityService.getAllCities(size, page, sortable, filter);
 
-        return new ResponseEntity<>(cities, HttpStatus.OK);
+        return new ResponseEntity<>(cityResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping(Endpoints.CITY_BY_ID)
@@ -55,7 +58,7 @@ public class CityController {
                     @ApiResponse(responseCode = "400", content = @Content(mediaType = "application/json"), description = "City is invalid")
             }
     )
-    public ResponseEntity<City> addCity(@RequestBody CityRequestDTO cityRequestDTO) {
+    public ResponseEntity<City> addCity(@RequestBody @Valid CityRequestDTO cityRequestDTO) {
         System.out.print(cityRequestDTO);
         City city = cityMapper.convertToEntity(cityRequestDTO);
         System.out.print(city);

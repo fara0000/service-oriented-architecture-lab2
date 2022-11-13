@@ -17,14 +17,14 @@ export const useFetch = <T>(method: string, url: string, urlParams?: string, dat
             .then((res) => res)
             .catch((err) => console.log('Post method error:', err))
 
-        case 'UPDATE':
+        case 'PUT':
             return axios.put(url, data,{
                 headers: {
                     'content-type': 'application/json'
                 },
             })
             .then((res) => res)
-            .catch((err) => console.log('Put method error:', err))
+            .catch((err) => err.response)
 
         case 'DELETE':
             return axios.delete(url + (urlParams ? urlParams : ''),{

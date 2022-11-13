@@ -22,9 +22,11 @@ import {SelectField} from "../components/select";
 import {ClimateTypes, GovernmentTypes, LivingStandardTypes} from "../types/enums";
 import { useFetch } from "../hooks/useFetch";
 import * as urls from "../api/urls";
-import {CityType, CoordinatesType, HumanType} from "../types/types";
+import {CityType, CoordinatesType, GetParamsType, HumanType} from "../types/types";
 import * as Yup from 'yup';
-
+import {getCityFetch} from "../api";
+import {successToast} from "../components/alerts/success";
+import {errorToast} from "../components/alerts/fail";
 
 interface FormValuesType {
     name: string;
@@ -38,12 +40,18 @@ interface FormValuesType {
     governor: HumanType | null;
 }
 
+type Props = {
+    setCities: any;
+    setCitiesCount: any;
+    params: GetParamsType;
+}
+
 const validateSchema = Yup.object().shape({
     name: Yup.string().min(3, 'Too short').max(30, 'Too long').required('required'),
     // coordinates should fix, now it gets all number | , | .
     coordinates: Yup.string().trim().matches(/^[0-9,.]/).required('required'),
     population: Yup.number().min(1).required(),
-    area: Yup.number().min(1).nullable(true),
+    area: Yup.number().min(1).required('required'),
     metersAboveSeaLevel: Yup.number().min(1).nullable(true),
     climate: Yup.string().nullable(true),
     // исправить enum, работает не дает отправить но не показывает для пользователя что не ок
@@ -56,7 +64,7 @@ const validateSchema = Yup.object().shape({
     }).nullable(true),
 })
 
-export const AddCityModal: FC = () => {
+export const AddCityModal: FC<Props> = ({ setCities, setCitiesCount, params }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isGovernor, setIsGovernor] = useState(false);
     const token = localStorage.getItem('authToken')
@@ -69,6 +77,13 @@ export const AddCityModal: FC = () => {
         setInputValue('');
     }
 
+    const getCities = async () => {
+        const cities = await getCityFetch(params);
+
+        setCities(cities?.data.cities);
+        setCitiesCount(cities?.data.count);
+    }
+
     const addNewCity = async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
         const newData: Omit<CityType, 'id'> = {
             ...values,
@@ -78,10 +93,15 @@ export const AddCityModal: FC = () => {
                 y: Number(values.coordinates.split(",")[1]),
             }
         }
-        console.log(newData, 'post data');
-        await useFetch("POST", urls.addCities, '', newData)
+        const res = await useFetch("POST", urls.addCities, '', newData)
+
         closeModal();
+
+        await getCities();
+
         formikHelpers.resetForm();
+
+        res?.status === 200 ? successToast("City has been added successfully") : errorToast("can't add city, try again please...");
     }
 
     return (
@@ -188,6 +208,7 @@ export const AddCityModal: FC = () => {
                                                     autoComplete="on"
                                                     name='area'
                                                     type="number"
+                                                    required
                                                     label='Area'
                                                     placeholder='square'
                                                     w="100%"

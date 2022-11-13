@@ -87,6 +87,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 
             <Select
                 isSearchable
+                color={props.color}
                 isClearable={!isMulti}
                 isMulti={isMulti}
                 isDisabled={isDisabled}
