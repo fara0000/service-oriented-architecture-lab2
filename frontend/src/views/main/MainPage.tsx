@@ -10,14 +10,18 @@ import {SettingsFormBlock} from "../../pageBlocks/settingsFormBlock/SettingsForm
 import {AddCityModal} from "../../modals/AddCityModal";
 
 export const MainPage = () => {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode, toggleColorMode, setColorMode } = useColorMode();
+
+    useEffect(() => {
+        setColorMode("dark");
+    }, [])
 
     return (
             <Box>
                 <Box
                     h={'auto'}
                     minH="100vh"
-                    bgImage={colorMode === "dark" ? "url('/assets/new_back.jpg')" : "url('/assets/images.jpeg')"}
+                    bgImage={colorMode === "dark" ? "url('./assets/new_back.jpg')" : "url('./assets/images.jpeg')"}
                     bgPosition="center"
                     backgroundRepeat="no-repeat"
                     color='#FFFFFF'
