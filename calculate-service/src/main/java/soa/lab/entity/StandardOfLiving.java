@@ -1,4 +1,4 @@
-package com.example.mainservice.entities;
+package soa.lab.entity;
 
 public enum StandardOfLiving {
     ULTRA_HIGH,

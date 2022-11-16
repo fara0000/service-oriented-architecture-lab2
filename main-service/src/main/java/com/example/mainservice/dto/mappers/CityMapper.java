@@ -1,6 +1,5 @@
 package com.example.mainservice.dto.mappers;
 import com.example.mainservice.dto.requests.CityRequestDTO;
-import com.example.mainservice.dto.requests.CityUpdateRequestDTO;
 import com.example.mainservice.entities.City;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

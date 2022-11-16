@@ -1,6 +1,5 @@
 package com.example.mainservice.entities;
 
-import com.example.mainservice.dto.CoordinatesDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
