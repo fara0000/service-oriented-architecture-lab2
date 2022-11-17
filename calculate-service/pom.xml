@@ -12,11 +12,11 @@
     </parent>
 
     <packaging>war</packaging>
-    <name>calculate-service</name>
+    <name>CalculateService</name>
     <description>Service oriented architecture labs</description>
 
     <groupId>soa.lab</groupId>
-    <artifactId>calculate-service</artifactId>
+    <artifactId>CalculateService</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -63,32 +63,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>2.0.0.Final</version>
             </plugin>
         </plugins>
+        <finalName>${project.name}</finalName>
     </build>
-
-
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.wildfly.plugins</groupId>-->
-<!--                <artifactId>wildfly-maven-plugin</artifactId>-->
-<!--                <version>2.0.0.Final</version>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--        <finalName>${project.name}</finalName>-->
-<!--    </build>-->
 
 </project>

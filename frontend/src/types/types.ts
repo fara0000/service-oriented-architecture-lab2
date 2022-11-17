@@ -5,16 +5,16 @@ export type CoordinatesType = {
 }
 
 export type HumanType = {
-    age: number;
-    height: number;
-    birthday: Date;
+    age?: number;
+    height?: number;
+    birthday?: Date | number | null | string;
 }
 
 export type CityType = {
     id: number;
     name: string;
     coordinates: CoordinatesType | any;
-    creationDate: Date | null | number | string;
+    creationDate: Date | number | null | string;
     area: number | null;
     population: number;
     metersAboveSeaLevel: number | null;

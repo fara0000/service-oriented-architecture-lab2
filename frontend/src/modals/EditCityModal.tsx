@@ -27,6 +27,8 @@ import * as Yup from 'yup';
 import {getCityFetch} from "../api";
 import {successToast} from "../components/alerts/success";
 import {errorToast} from "../components/alerts/fail";
+import {convertTimestamp} from "../utils/convertDate";
+import parse from "date-fns/parse";
 
 type Props = {
     cityId: number;
@@ -64,7 +66,17 @@ const validateSchema = Yup.object().shape({
     governor: Yup.object().shape({
         age: Yup.number().min(1),
         height: Yup.number().min(60.0),
-        birthday: Yup.string(),
+        birthday: Yup.date()
+            .transform(function (value, originalValue) {
+                if (this.isType(value)) {
+                    return value;
+                }
+                return parse(originalValue, "yyyy.MM.dd", new Date());
+            })
+            .typeError("please enter a valid date")
+            .required()
+            .max("2022-11-17", "Date is too late")
+            .min("1940-11-13", "Date is too early"),
     }).nullable(true),
 })
 
@@ -160,7 +172,10 @@ export const EditCityModal: FC<Props> = ({
                                 climate: item.climate,
                                 government: item.government,
                                 standardOfLiving: item.standardOfLiving,
-                                governor: item.governor,
+                                governor: (item.governor !== null ? {
+                                    ...item.governor,
+                                    birthday: convertTimestamp(item.governor?.birthday),
+                                } : null),
                             }}
                             validationSchema={validateSchema}
                             onSubmit={ async (values: EditFormValuesType, formikHelpers: FormikHelpers<EditFormValuesType>) => {

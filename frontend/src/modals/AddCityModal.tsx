@@ -20,10 +20,11 @@ import {Form, Formik, FormikHelpers} from "formik";
 import {TextInput} from "../components/input/TextInput";
 import {SelectField} from "../components/select";
 import {ClimateTypes, GovernmentTypes, LivingStandardTypes} from "../types/enums";
-import { useFetch } from "../hooks/useFetch";
+import {useFetch} from "../hooks/useFetch";
 import * as urls from "../api/urls";
-import {CityType, CoordinatesType, GetParamsType, HumanType} from "../types/types";
+import {CityType, GetParamsType, HumanType} from "../types/types";
 import * as Yup from 'yup';
+import parse from "date-fns/parse";
 import {getCityFetch} from "../api";
 import {successToast} from "../components/alerts/success";
 import {errorToast} from "../components/alerts/fail";
@@ -60,7 +61,17 @@ const validateSchema = Yup.object().shape({
     governor: Yup.object().shape({
         age: Yup.number().min(1),
         height: Yup.number().min(60.0),
-        birthday: Yup.string(),
+        birthday: Yup.date()
+            .transform(function (value, originalValue) {
+                if (this.isType(value)) {
+                    return value;
+                }
+                return parse(originalValue, "yyyy.MM.dd", new Date());
+            })
+            .typeError("please enter a valid date")
+            .required()
+            .max("2022-11-17", "Date is too late")
+            .min("1940-11-13", "Date is too early"),
     }).nullable(true),
 })
 
@@ -93,7 +104,20 @@ export const AddCityModal: FC<Props> = ({ setCities, setCitiesCount, params }) =
                 y: Number(values.coordinates.split(",")[1]),
             }
         }
-        const res = await useFetch("POST", urls.addCities, '', newData)
+        const newDataWithGoverner: Omit<CityType, 'id'> = {
+            ...values,
+            creationDate: new Date(),
+            governor: {
+                age: values.governor?.age,
+                height: values.governor?.height,
+                birthday: new Date(values.governor?.birthday ? values.governor.birthday : '12/12/2000'),
+            },
+            coordinates: {
+                x: Number(values.coordinates.split(",")[0]),
+                y: Number(values.coordinates.split(",")[1]),
+            }
+        }
+        const res = await useFetch("POST", urls.addCities, '', values.governor !== null ? newDataWithGoverner : newData)
 
         closeModal();
 
@@ -180,7 +204,7 @@ export const AddCityModal: FC<Props> = ({ setCities, setCitiesCount, params }) =
                                                 w="100%"
                                                 h="43px"
                                                 borderRadius="6px"
-                                                    style={{ border: "1px solid #C4C4C4"}}
+                                                style={{ border: "1px solid #C4C4C4"}}
                                                 required
                                                 _placeholder={{ color: "#C4C4C4" }}
                                             />
@@ -357,7 +381,7 @@ export const AddCityModal: FC<Props> = ({ setCities, setCitiesCount, params }) =
                                                         autoComplete="on"
                                                         name='governor.birthday'
                                                         label='Birthday'
-                                                        placeholder='dd/mm/yyyy'
+                                                        placeholder='yyyy.dd.mm'
                                                         w="100%"
                                                         h="43px"
                                                         borderRadius="6px"

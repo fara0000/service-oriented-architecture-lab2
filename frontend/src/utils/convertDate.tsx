@@ -9,7 +9,7 @@ export const convertMinutesToData = (totalMinutes: any) => {
     return '0' + hours + ':' + minutes + ':' + '00';
 }
 
-export const convertTimestamp = (timestamp: Date | number | string | null) => {
+export const convertTimestamp = (timestamp: any) => {
     // @ts-ignore
     let d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
         yyyy = d.getFullYear(),
@@ -33,7 +33,7 @@ export const convertTimestamp = (timestamp: Date | number | string | null) => {
 
     // ie: 2013-02-18, 8:35 AM
     // time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
-    time = yyyy + '-' + mm + '-' + dd;
+    time = yyyy + '/' + mm + '/' + dd;
 
     return time;
 }

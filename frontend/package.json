@@ -24,6 +24,7 @@
     "@types/styled-components": "^5.1.25",
     "axios": "^0.24.0",
     "chakra-paginator": "^0.7.3",
+    "date-fns": "^2.29.3",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
     "mobx": "^6.3.12",
