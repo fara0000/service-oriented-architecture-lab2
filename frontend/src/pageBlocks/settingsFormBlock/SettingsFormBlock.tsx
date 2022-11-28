@@ -17,6 +17,7 @@ export const SettingsFormBlock: FC<Props> = () => {
 
     const manipulateCityData = (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
         context?.setSettingFormBlockValue(values);
+        formikHelpers.resetForm();
     }
 
     return (

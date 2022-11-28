@@ -47,17 +47,15 @@ export const CitiesContainer: FC<Props> = () => {
     let pages = new Array<number>(Math.ceil(citiesCount / getParams.limit));
 
     const fetchCity = useMemo(async () => {
-        console.log('Зашел в функция')
         return useFetch("GET", urls.getCities, `?page=${getParams.offset}&size=${getParams.limit}&sortable=${getParams.sortable}&filter=${getParams.filter}`)
     }, [getParams.offset, getParams.sortable, getParams.filter])
 
     // @ts-ignore
     useEffect(async () => {
-        'Зашел в функция'
         const cities = await fetchCity;
         // @ts-ignore
         setCities(cities.data.cities);
-        setCitiesCount(cities?.data.count);
+        setCitiesCount(cities.data.cities.length < 1 ? 0 : cities?.data.count);
     }, [getParams.offset, getParams.sortable, getParams.filter]);
 
 

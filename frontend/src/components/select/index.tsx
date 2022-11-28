@@ -1,5 +1,6 @@
 // @ts-nocheck
 import {
+    CSSObject,
     Flex,
     FormControl,
     FormControlProps,
@@ -7,9 +8,10 @@ import {
     FormLabel,
     TypographyProps,
 } from '@chakra-ui/react';
+import './index.css';
 import { FieldHookConfig, useField } from 'formik';
 import React, { FC } from 'react';
-import Select, { NamedProps } from 'react-select';
+import Select, {MenuProps, NamedProps} from 'react-select';
 import { Option } from 'react-select/src/filters';
 
 type SelectFieldProps = FieldHookConfig<string[] | string> &
@@ -88,10 +90,14 @@ export const SelectField: FC<SelectFieldProps> = ({
             <Select
                 isSearchable
                 color={props.color}
+                // styles={{ menu(base: CSSObject, props: MenuProps<OptionType, IsMulti, GroupType>): CSSObject {
+                //         base: { zIndex: 1000 }
+                //     }}}
                 isClearable={!isMulti}
                 isMulti={isMulti}
                 isDisabled={isDisabled}
                 id={props.name}
+                // menuIsOpen={true}
                 name={field.name}
                 options={options}
                 components={{ IndicatorSeparator: null }}
@@ -100,6 +106,7 @@ export const SelectField: FC<SelectFieldProps> = ({
                 value={getValue()}
                 onBlur={() => handlers.setTouched(true)}
                 onChange={onChange}
+                data-at={'select'}
             />
 
             {!disableErrorMessage && <FormErrorMessage>{meta.error}</FormErrorMessage>}

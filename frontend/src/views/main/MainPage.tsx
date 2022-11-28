@@ -2,14 +2,16 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Box, Text, Button, useColorMode, Flex, Image, Icon, ButtonProps} from "@chakra-ui/react";
 import {useFetch} from "../../hooks/useFetch";
 // import {getCitiesFetch, getCity} from "../../api";
-import { BsMoonStarsFill, BsSun } from "react-icons/bs";
+import {BsMoonStarsFill, BsQuestionCircle, BsSun} from "react-icons/bs";
 import { TextInput } from "../../components/input/TextInput";
 import { Form, Formik } from "formik";
 import {CitiesContainer} from "../../pageBlocks/citiesContainer/CitiesContainer";
 import {SettingsFormBlock} from "../../pageBlocks/settingsFormBlock/SettingsFormBlock";
 import {AddCityModal} from "../../modals/AddCityModal";
+import {AdditionalServiceModal} from "../../modals/AdditionalServiceModal";
 
 export const MainPage = () => {
+    const [isOpen, setIsOpen] = useState(false);
     const { colorMode, toggleColorMode, setColorMode } = useColorMode();
 
     useEffect(() => {
@@ -45,6 +47,12 @@ export const MainPage = () => {
                     <SettingsFormBlock />
 
                     <CitiesContainer />
+
+                    <Icon as={BsQuestionCircle} pos={'absolute'} w={'32px'} h='32px' bottom='5' right='5' cursor="pointer" onClick={() => setIsOpen(true)}/>
+
+                    {isOpen &&
+                        <AdditionalServiceModal isOpen={isOpen} setIsAdditionalServiceModalOpen={setIsOpen} />
+                    }
                 </Box>
             </Box>
     )

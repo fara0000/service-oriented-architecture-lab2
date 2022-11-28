@@ -28,8 +28,8 @@ public class CityService {
 
     public CityResponseDTO getAllCities(Integer size, Integer page, String sortable, String filter) {
         Integer count = cityRepository.findAll().size();
-        Pageable pagination = PageRequest.of(page - 1, size);
-        Pageable paginationAndSorting = PageRequest.of(page - 1, size, Sort.by(SortFields.isContains(sortable) ? sortable : "id"));
+        Pageable pagination = PageRequest.of(page != null ? page - 1 : 0, size != null ? size : count - 1);
+        Pageable paginationAndSorting = PageRequest.of(page != null ? page - 1 : 0, size != null ? size : count - 1, Sort.by(SortFields.isContains(sortable) ? sortable : "id"));
 
         if (filter == null || filter.isEmpty()) {
             if (page == null || size == null) {
@@ -44,14 +44,15 @@ public class CityService {
 
         Node rootNode = new RSQLParser().parse(filter);
         Specification<City> spec = rootNode.accept(new CustomRsqlVisitor<>());
+        Integer specCount = cityRepository.findAll(spec, Sort.by(SortFields.isContains(sortable) ? sortable : "id")).size();
         if (page == null || size == null) {
             if (sortable == null || sortable.isEmpty()) return new CityResponseDTO(cityRepository.findAll(spec), count);
-            return new CityResponseDTO(cityRepository.findAll(spec, Sort.by(SortFields.isContains(sortable) ? sortable : "id")), count);
+            return new CityResponseDTO(cityRepository.findAll(spec, Sort.by(SortFields.isContains(sortable) ? sortable : "id")), specCount);
         }
         if (sortable == null || sortable.isEmpty())
-            return new CityResponseDTO(cityRepository.findAll(spec, pagination).stream().collect(Collectors.toList()), count);
+            return new CityResponseDTO(cityRepository.findAll(spec, pagination).stream().collect(Collectors.toList()), specCount);
 
-        return new CityResponseDTO(cityRepository.findAll(spec, paginationAndSorting).stream().collect(Collectors.toList()), count);
+        return new CityResponseDTO(cityRepository.findAll(spec, paginationAndSorting).stream().collect(Collectors.toList()), specCount);
     }
 
     public City getCityById(Integer id) {
