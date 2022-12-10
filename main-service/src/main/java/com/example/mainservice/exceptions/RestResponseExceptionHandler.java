@@ -1,10 +1,20 @@
 package com.example.mainservice.exceptions;
 
+import com.example.mainservice.dto.ExceptionMessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.persistence.RollbackException;
+import java.util.NoSuchElementException;
 
 /**
     ResponseEntityExceptionHandler -> A convenient base class for @ControllerAdvice classes that wish to provide
@@ -18,19 +28,27 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     /**
         Not found exception handler
      **/
-//    @ExceptionHandler(value = { NotFoundException.class })
-//    protected ResponseEntity<Object> handleDataNotFound(RuntimeException e, WebRequest request) {
-//        log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
-//        ExceptionMessageDto errorDTO = new ExceptionMessageDto(e.getMessage());
-//        return handleExceptionInternal(e, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-//    }
+    @ExceptionHandler(value = { NotFoundException.class })
+    protected ResponseEntity<Object> handleDataNotFound(RuntimeException e, WebRequest request) {
+        log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        ExceptionMessageDto errorDTO = new ExceptionMessageDto(e.getMessage(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(e, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 //
-//    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class})
-//    protected ResponseEntity<Object> handleInputIncorrectExceptionMessageDto(RuntimeException e, WebRequest request) {
-//        log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
-//        ExceptionMessageDto errorDTO = new ExceptionMessageDto("Invalid value supplied");
-//        return handleExceptionInternal(e, errorDTO, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-//    }
+    @ExceptionHandler(value = {TransactionSystemException.class})
+    protected ResponseEntity<Object> handleInputIncorrectExceptionMessageDto(RuntimeException e, WebRequest request) {
+        log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        ExceptionMessageDto errorDTO = new ExceptionMessageDto("Invalid value supplied", HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(e, errorDTO, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    protected ResponseEntity<Object> handleNoSuchElement(RuntimeException e, WebRequest request) {
+        log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        ExceptionMessageDto errorDTO = new ExceptionMessageDto("No such element", HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(e, errorDTO, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
 //
 //    @Override
 //    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

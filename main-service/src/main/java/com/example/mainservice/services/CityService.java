@@ -1,6 +1,7 @@
 package com.example.mainservice.services;
 
 import com.example.mainservice.dto.responses.CityResponseDTO;
+import com.example.mainservice.entities.Coordinates;
 import com.example.mainservice.enums.SortFields;
 import com.example.mainservice.exceptions.NotFoundException;
 import com.example.mainservice.entities.City;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,13 +74,17 @@ public class CityService {
     }
 
     public City updateCity(Integer id, City cityUpdateData) {
+        Integer coordinateId = cityRepository.findById(id).get().getCoordinates().getId();
+        Coordinates coordinates = new Coordinates(coordinateId, cityUpdateData.getCoordinates().getX(), cityUpdateData.getCoordinates().getY());
+        System.out.println(coordinateId);
+        System.out.println(coordinates);
         return cityRepository.findById(id).map(org -> {
             org.setName(cityUpdateData.getName());
             org.setArea(cityUpdateData.getArea());
             org.setClimate(cityUpdateData.getClimate());
             org.setGovernment(cityUpdateData.getGovernment());
             org.setGovernor(cityUpdateData.getGovernor());
-            org.setCoordinates(cityUpdateData.getCoordinates());
+            org.setCoordinates(coordinates);
             org.setCreationDate(cityUpdateData.getCreationDate());
             org.setMetersAboveSeaLevel(cityUpdateData.getMetersAboveSeaLevel());
             org.setPopulation(cityUpdateData.getPopulation());
